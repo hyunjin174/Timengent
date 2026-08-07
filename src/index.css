@@ -1,0 +1,137 @@
+@import "tailwindcss";
+
+@theme {
+  /*
+   * Galmuri is a set of discrete pixel-grid faces (Galmuri9, Galmuri11, ...), not one
+   * scalable font — each only looks crisp at its native size (or integer multiples of it).
+   * Stick to font-pixel at 11/22px and font-pixel-sm at 9/18px; avoid arbitrary in-between sizes.
+   */
+  --font-pixel: "Galmuri11", ui-monospace, monospace;
+  --font-pixel-sm: "Galmuri9", ui-monospace, monospace;
+
+  /* Cyworld retro-blue palette */
+  --color-cy-sky-top: #79c6f2;
+  --color-cy-sky-mid: #a9ddf5;
+  --color-cy-sky-bottom: #e3f6ff;
+  --color-cy-blue: #3d7fc4;
+  --color-cy-blue-light: #6fb1e8;
+  --color-cy-navy: #1c355f;
+  --color-cy-panel: #eef7ff;
+  --color-cy-panel-alt: #ffffff;
+  --color-cy-grid: #cfe7ff;
+  --color-cy-yellow: #ffcd4b;
+  --color-cy-yellow-dark: #e0a400;
+  --color-cy-pink: #ff8fab;
+  --color-cy-green: #6bcf63;
+  --color-cy-red: #ff6b6b;
+  --color-cy-orange: #ffa64b;
+  --color-cy-cream: #fff6e0;
+  --color-cy-ink: #16314f;
+
+  --animate-float-bob: float-bob 2.4s ease-in-out infinite;
+  --animate-wiggle: wiggle 0.5s ease-in-out;
+  --animate-pop-badge: pop-badge 1.6s ease-out;
+}
+
+@layer base {
+  * {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: var(--font-pixel);
+    background: var(--color-cy-navy);
+    color: var(--color-cy-ink);
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+  }
+
+  #root {
+    min-height: 100svh;
+  }
+}
+
+@layer utilities {
+  /* 모눈 그래프 배경 (graph-paper grid) */
+  .bg-grid-paper {
+    background-image:
+      linear-gradient(var(--color-cy-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-cy-grid) 1px, transparent 1px);
+    background-size: 16px 16px;
+    background-color: var(--color-cy-panel-alt);
+  }
+
+  /* Chunky retro pixel-window border with stepped corners */
+  .pixel-frame {
+    position: relative;
+    border: 4px solid var(--color-cy-navy);
+    box-shadow:
+      inset 0 0 0 3px #ffffff,
+      inset 0 0 0 6px var(--color-cy-blue),
+      4px 4px 0 0 rgba(28, 53, 95, 0.35);
+    clip-path: polygon(
+      0 8px, 8px 8px, 8px 0,
+      calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+      100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+      8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+    );
+  }
+
+  .pixel-frame-sm {
+    position: relative;
+    border: 3px solid var(--color-cy-navy);
+    box-shadow:
+      inset 0 0 0 2px #ffffff,
+      inset 0 0 0 4px var(--color-cy-blue);
+    clip-path: polygon(
+      0 5px, 5px 5px, 5px 0,
+      calc(100% - 5px) 0, calc(100% - 5px) 5px, 100% 5px,
+      100% calc(100% - 5px), calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%,
+      5px 100%, 5px calc(100% - 5px), 0 calc(100% - 5px)
+    );
+  }
+
+  .text-pixel-shadow {
+    text-shadow: 2px 2px 0 rgba(28, 53, 95, 0.25);
+  }
+
+  /* Cheap "isometric" floor: crossed diagonal hatching suggests diamond tiles without real 3D transforms. */
+  .bg-iso-floor {
+    background-color: #cfe0a8;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.35) 0 2px, transparent 2px 22px),
+      repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.35) 0 2px, transparent 2px 22px);
+  }
+}
+
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  25% { transform: rotate(-4deg) translateY(-2px); }
+  75% { transform: rotate(4deg) translateY(-2px); }
+}
+
+@keyframes pop-badge {
+  0% { transform: scale(0) translateY(0); opacity: 0; }
+  15% { transform: scale(1.2) translateY(-4px); opacity: 1; }
+  25% { transform: scale(1) translateY(-6px); opacity: 1; }
+  80% { transform: scale(1) translateY(-6px); opacity: 1; }
+  100% { transform: scale(0.8) translateY(-2px); opacity: 0; }
+}
+
+@keyframes cloud-drift {
+  0% { transform: translateX(-10%); }
+  100% { transform: translateX(110%); }
+}
