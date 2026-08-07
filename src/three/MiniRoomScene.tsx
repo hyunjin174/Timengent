@@ -13,9 +13,11 @@ const PIXEL_DPR = 0.42;
 
 interface MiniRoomSceneProps {
   avatars: AvatarState[];
+  selectedId: string;
+  onSelect: (id: string) => void;
 }
 
-export function MiniRoomScene({ avatars }: MiniRoomSceneProps) {
+export function MiniRoomScene({ avatars, selectedId, onSelect }: MiniRoomSceneProps) {
   return (
     <Canvas
       orthographic
@@ -26,10 +28,6 @@ export function MiniRoomScene({ avatars }: MiniRoomSceneProps) {
     >
       <color attach="background" args={['#bfe6fb']} />
 
-      {/*
-       * No real-time shadow maps: the reference pixel art has flat lighting with simple
-       * blob shadows, and skipping them keeps the scene cheap on low-end devices.
-       */}
       <ambientLight intensity={1.5} />
       <directionalLight position={[6, 10, 8]} intensity={1.5} />
       <directionalLight position={[-8, 5, -4]} intensity={0.4} />
@@ -41,8 +39,9 @@ export function MiniRoomScene({ avatars }: MiniRoomSceneProps) {
             key={avatar.id}
             avatar={avatar}
             phase={i * 1.7}
-            // Characters standing further back get taller bubbles so the rows don't collide.
             bubbleY={avatar.room.z > 0 ? 2.75 : 3.35}
+            isSelected={avatar.id === selectedId}
+            onSelect={() => onSelect(avatar.id)}
           />
         ))}
       </Suspense>

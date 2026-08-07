@@ -1,8 +1,21 @@
-# Timengent Studio
+# 팀에이전트 (Timengent Studio)
 
-싸이월드/다마고치 스타일의 AI 아바타 대시보드. 쇼핑 숏츠 & 콘텐츠 제작 AI 팀(총괄 디렉터, 기획 AI, 편집 AI)이 아이소메트릭 룸에 배치되어 각자 상태를 갖고 움직이는 뼈대 구현입니다.
+싸이월드/다마고치 스타일의 AI 아바타 대시보드입니다.
 
-React + TypeScript + Vite + Tailwind CSS v4.
+쇼핑 숏츠 & 콘텐츠 제작 AI 팀(총괄 디렉터, 기획 AI, 편집 AI)이 아이소메트릭 룸에 배치되어 각자 상태를 갖고 움직입니다.
+**채팅으로 각 에이전트에게 업무를 지시**할 수 있는 가상 사무실 환경을 목표로 합니다.
+
+React + TypeScript + Vite + Tailwind CSS v4 + Three.js
+
+## 주요 기능
+
+- **완전 한국어 UI**
+- 팀원 선택 (목록 클릭 또는 3D 룸에서 아바타 클릭)
+- **채팅으로 업무 지시** — 역할별 캐릭터 응답
+- 빠른 명령어 버튼 (기획/편집/총괄에 맞게 달라짐)
+- 배고픔 / 피로도 / 행복도 실시간 변화 (다마고치 스타일)
+- 밥주기 · 칭찬하기 · 업무지시 빠른 상호작용
+- 3D 미니룸에서 아바타가 돌아다니며 말풍선 표시
 
 ## 개발
 
@@ -15,8 +28,15 @@ npm run lint     # oxlint
 
 ## 구조
 
-- `src/types/avatar.ts` — 아바타 상태/프로필 타입 정의
-- `src/data/avatars.ts` — 팀원 목데이터 (팔레트, 배치, 대사)
-- `src/hooks/useAvatarState.ts` — 배고픔/피로도/행복도 실시간 감소 로직 + 상호작용(밥주기/칭찬하기/업무지시)
-- `src/components/ui/` — 재사용 픽셀 UI (PixelPanel, PixelButton, PixelSprite)
-- `src/components/dashboard/` — 프로필 패널(좌) / 메인룸(우) 대시보드 컴포넌트
+- `src/types/avatar.ts` — 아바타 상태/프로필/채팅 타입
+- `src/data/avatars.ts` — 팀원 목데이터 + 역할별 응답 생성기
+- `src/hooks/useAvatarState.ts` — 상태 관리, 채팅, 상호작용 로직
+- `src/components/dashboard/` — 프로필, 팀원목록, 채팅패널, 미니룸
+- `src/three/` — 3D 미니룸 + 복셀 아바타
+
+## 사용 방법
+
+1. 왼쪽 **팀원 목록** 또는 3D 룸의 아바타를 클릭해서 대화 대상을 선택합니다.
+2. 아래 **채팅창**에 업무를 입력하거나 빠른 명령어 버튼을 누릅니다.
+3. 에이전트가 역할에 맞게 응답하고, 상태 메시지와 말풍선이 업데이트됩니다.
+4. 밥주기 / 칭찬하기 버튼으로 상태를 관리할 수 있습니다.
