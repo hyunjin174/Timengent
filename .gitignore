@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Vendored `npx skills add` content — skills-lock.json is the source of truth,
+# restore with: npx skills experimental_install
+.agents/
+.claude/skills/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
