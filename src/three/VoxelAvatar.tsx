@@ -1,8 +1,12 @@
 import { useFrame } from '@react-three/fiber';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type RefObject } from 'react';
 import type { Group, Mesh } from 'three';
 import type { Mood, PixelPalette } from '../types/avatar';
 import { PART } from './palette';
+
+export interface WalkState {
+  isWalking: boolean;
+}
 
 /**
  * A chibi character built entirely from boxes (voxel style), colored from the same
@@ -13,13 +17,21 @@ interface VoxelAvatarProps {
   mood: Mood;
   /** Slight per-character phase offset so a room full of avatars doesn't bob in lockstep. */
   phase?: number;
+  /**
+   * Mutable ref the parent updates every frame from real position deltas (not React state —
+   * flipping this via setState 60x/sec would thrash re-renders). Read imperatively below so
+   * the walk cycle turns on/off without ever triggering a render.
+   */
+  walkStateRef?: RefObject<WalkState>;
 }
 
-export function VoxelAvatar({ palette, mood, phase = 0 }: VoxelAvatarProps) {
+export function VoxelAvatar({ palette, mood, phase = 0, walkStateRef }: VoxelAvatarProps) {
   const root = useRef<Group>(null);
   const head = useRef<Group>(null);
   const armL = useRef<Mesh>(null);
   const armR = useRef<Mesh>(null);
+  const legL = useRef<Group>(null);
+  const legR = useRef<Group>(null);
   const moodStart = useRef(0);
 
   const hair = palette[PART.hair];
@@ -41,7 +53,29 @@ export function VoxelAvatar({ palette, mood, phase = 0 }: VoxelAvatarProps) {
     const since = t - moodStart.current;
     const bob = Math.sin(t * 2.4 + phase) * 0.02;
 
-    if (!root.current || !head.current || !armL.current || !armR.current) return;
+    if (!root.current || !head.current || !armL.current || !armR.current || !legL.current || !legR.current) {
+      return;
+    }
+
+    if (walkStateRef?.current.isWalking) {
+      // Walk cycle wins over mood animation — legs and opposite arms swing in a contralateral
+      // gait, with a small double-time bob so steps read clearly at this scale.
+      const stride = Math.sin(t * 9 + phase);
+      root.current.position.y = Math.abs(stride) * 0.03;
+      root.current.rotation.x = 0;
+      root.current.rotation.z = 0;
+      legL.current.rotation.x = stride * 0.7;
+      legR.current.rotation.x = -stride * 0.7;
+      armL.current.rotation.x = -stride * 0.5;
+      armR.current.rotation.x = stride * 0.5;
+      head.current.rotation.x = 0;
+      head.current.rotation.y = 0;
+      head.current.rotation.z = 0;
+      return;
+    }
+
+    legL.current.rotation.x = 0;
+    legR.current.rotation.x = 0;
 
     if (mood === 'praised') {
       // Two happy hops with arms thrown up.
@@ -83,19 +117,27 @@ export function VoxelAvatar({ palette, mood, phase = 0 }: VoxelAvatarProps) {
 
   return (
     <group ref={root}>
-      {/* legs + shoes */}
-      {[-0.13, 0.13].map((x) => (
-        <group key={x}>
-          <mesh position={[x, 0.28, 0]}>
-            <boxGeometry args={[0.17, 0.36, 0.18]} />
-            <meshLambertMaterial color={pants} />
-          </mesh>
-          <mesh position={[x, 0.06, 0.01]}>
-            <boxGeometry args={[0.19, 0.12, 0.22]} />
-            <meshLambertMaterial color={shoes} />
-          </mesh>
-        </group>
-      ))}
+      {/* legs + shoes — each leg is a group pivoted at the hip so rotation.x swings it naturally */}
+      <group ref={legL} position={[-0.13, 0.46, 0]}>
+        <mesh position={[0, -0.18, 0]}>
+          <boxGeometry args={[0.17, 0.36, 0.18]} />
+          <meshLambertMaterial color={pants} />
+        </mesh>
+        <mesh position={[0, -0.4, 0.01]}>
+          <boxGeometry args={[0.19, 0.12, 0.22]} />
+          <meshLambertMaterial color={shoes} />
+        </mesh>
+      </group>
+      <group ref={legR} position={[0.13, 0.46, 0]}>
+        <mesh position={[0, -0.18, 0]}>
+          <boxGeometry args={[0.17, 0.36, 0.18]} />
+          <meshLambertMaterial color={pants} />
+        </mesh>
+        <mesh position={[0, -0.4, 0.01]}>
+          <boxGeometry args={[0.19, 0.12, 0.22]} />
+          <meshLambertMaterial color={shoes} />
+        </mesh>
+      </group>
 
       {/* torso */}
       <mesh position={[0, 0.75, 0]}>

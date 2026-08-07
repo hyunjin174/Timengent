@@ -1,5 +1,6 @@
 import { Html } from '@react-three/drei';
 import type { AvatarState } from '../types/avatar';
+import { useWander } from './useWander';
 import { VoxelAvatar } from './VoxelAvatar';
 
 const MOOD_BADGE: Record<AvatarState['mood'], string | null> = {
@@ -19,24 +20,34 @@ interface RoomAvatar3DProps {
 /**
  * One avatar standing in the 3D room, with its speech bubble and nameplate rendered as
  * DOM overlays (via drei's Html) so Korean pixel text stays crisp instead of being
- * resampled by the low-resolution WebGL buffer.
+ * resampled by the low-resolution WebGL buffer. Wanders near its home spot when idle —
+ * see useWander for why that's ref-driven instead of React state.
  */
 export function RoomAvatar3D({ avatar, phase, bubbleY }: RoomAvatar3DProps) {
   const badge = MOOD_BADGE[avatar.mood];
+  const { positionGroup, facingGroup, walkState } = useWander(
+    avatar.room.x,
+    avatar.room.z,
+    avatar.room.rotation,
+    avatar.mood === 'idle',
+  );
 
   return (
-    <group position={[avatar.room.x, 0, avatar.room.z]} rotation={[0, avatar.room.rotation, 0]}>
+    <group ref={positionGroup} position={[avatar.room.x, 0, avatar.room.z]}>
       {/* Flat blob shadow instead of a real shadow map — cheaper, and truer to the pixel-art look. */}
       <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[0.42, 12]} />
         <meshBasicMaterial color="#8a6f4a" transparent opacity={0.28} />
       </mesh>
 
-      <group scale={1.2}>
-        <VoxelAvatar palette={avatar.palette} mood={avatar.mood} phase={phase} />
+      <group ref={facingGroup} rotation={[0, avatar.room.rotation, 0]}>
+        <group scale={1.2}>
+          <VoxelAvatar palette={avatar.palette} mood={avatar.mood} phase={phase} walkStateRef={walkState} />
+        </group>
       </group>
 
-      {/* Counter-rotate the overlays so they always face the camera, not the character. */}
+      {/* Counter-rotate the overlays against the character's resting orientation only — not the
+          live walking rotation — so bubbles don't swing around while it wanders. */}
       <group rotation={[0, -avatar.room.rotation, 0]}>
         <Html position={[0, bubbleY, 0]} center distanceFactor={7} zIndexRange={[20, 0]} pointerEvents="none">
           <div className="flex flex-col items-center gap-1">
