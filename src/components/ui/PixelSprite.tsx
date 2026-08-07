@@ -7,7 +7,6 @@ interface PixelSpriteProps {
   /** Displayed size of one source pixel, in CSS px. */
   pixelSize?: number;
   className?: string;
-  mirror?: boolean;
 }
 
 /**
@@ -16,7 +15,7 @@ interface PixelSpriteProps {
  * upscales with hard nearest-neighbor edges instead of blurring — real pixel art
  * from plain data, no bitmap assets required.
  */
-export function PixelSprite({ matrix, palette, pixelSize = 7, className = '', mirror = false }: PixelSpriteProps) {
+export function PixelSprite({ matrix, palette, pixelSize = 7, className = '' }: PixelSpriteProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rows = matrix.length;
   const cols = matrix[0]?.length ?? 0;
@@ -46,7 +45,6 @@ export function PixelSprite({ matrix, palette, pixelSize = 7, className = '', mi
         width: cols * pixelSize,
         height: rows * pixelSize,
         imageRendering: 'pixelated',
-        transform: mirror ? 'scaleX(-1)' : undefined,
       }}
     />
   );

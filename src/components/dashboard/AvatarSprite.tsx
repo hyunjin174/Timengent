@@ -37,12 +37,7 @@ export function AvatarSprite({ avatar, pixelSize = 7, showBadge = true }: Avatar
         </span>
       )}
       <div className={MOOD_ANIM[avatar.mood]}>
-        <PixelSprite
-          matrix={CHIBI_MATRIX}
-          palette={avatar.palette}
-          pixelSize={pixelSize}
-          mirror={avatar.room.facing === 'left'}
-        />
+        <PixelSprite matrix={CHIBI_MATRIX} palette={avatar.palette} pixelSize={pixelSize} />
       </div>
     </div>
   );

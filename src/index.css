@@ -28,12 +28,7 @@
   --color-cy-cream: #fff6e0;
   --color-cy-ink: #16314f;
 
-  /* Warm interior-office tones (reception counter, wood floor, walls) */
-  --color-cy-wood: #b98d5d;
-  --color-cy-wood-dark: #8b6239;
-  --color-cy-wall: #f5ead2;
-  --color-cy-wall-trim: #e6d1a3;
-  --color-cy-floor: #e4cea2;
+  /* The 3D room's own interior tones live in src/three/palette.ts. */
   --color-cy-green-dark: #4f9a3f;
 
   --animate-float-bob: float-bob 2.4s ease-in-out infinite;
@@ -109,24 +104,6 @@
 
   .text-pixel-shadow {
     text-shadow: 2px 2px 0 rgba(28, 53, 95, 0.25);
-  }
-
-  /* Cheap "isometric" floor: crossed diagonal hatching suggests tan tile grout lines without real 3D transforms. */
-  .bg-iso-floor {
-    background-color: var(--color-cy-floor);
-    background-image:
-      repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.45) 0 2px, transparent 2px 22px),
-      repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.45) 0 2px, transparent 2px 22px);
-  }
-
-  /* Subtle horizontal wood-grain lines for desks / signboards. */
-  .bg-wood-grain {
-    background-color: var(--color-cy-wood);
-    background-image: repeating-linear-gradient(
-      0deg,
-      rgba(0, 0, 0, 0.08) 0 3px,
-      transparent 3px 9px
-    );
   }
 
   /* Outdoor grass band for the page backdrop, echoing the Cyworld splash-screen lawn. */

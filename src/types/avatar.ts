@@ -9,14 +9,12 @@ export type Mood = 'idle' | 'eating' | 'praised' | 'working';
 
 export type AvatarAction = 'feed' | 'praise' | 'assignTask';
 
+/** Where an avatar stands in the 3D mini-room, in world units on the floor plane. */
 export interface RoomPlacement {
-  /** Horizontal position within the room, in % from the left. */
-  left: number;
-  /** Vertical position within the room, in % from the bottom. */
-  bottom: number;
-  /** Relative size to fake isometric depth (further back = smaller). */
-  scale: number;
-  facing: 'left' | 'right';
+  x: number;
+  z: number;
+  /** Y-axis rotation in radians. 0 faces +z (toward the front of the room). */
+  rotation: number;
 }
 
 /** Static, unchanging definition of a team member avatar. */
