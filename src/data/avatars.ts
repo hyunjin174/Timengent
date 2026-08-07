@@ -38,7 +38,7 @@ export const AVATAR_PROFILES: AvatarProfile[] = [
     role: 'Main Director',
     isMain: true,
     palette: CHARACTER_PALETTES.director,
-    room: { left: 46, bottom: 6, scale: 1.15, facing: 'right' },
+    room: { left: 48, bottom: 7, scale: 1.15, facing: 'right' },
     idleMessages: [
       'Today... 새로운 숏츠 기획 구상 중 🎬',
       'Today... 쇼핑 트렌드 리서치 하는 중 🔍',
@@ -52,7 +52,7 @@ export const AVATAR_PROFILES: AvatarProfile[] = [
     role: 'Content Planner',
     isMain: false,
     palette: CHARACTER_PALETTES.planner,
-    room: { left: 16, bottom: 28, scale: 0.9, facing: 'right' },
+    room: { left: 31, bottom: 34, scale: 0.85, facing: 'right' },
     idleMessages: [
       '이번 주 인기 상품 분석 완료했어요 📊',
       '숏츠 대본 초안 작성 중... ✍️',
@@ -65,7 +65,7 @@ export const AVATAR_PROFILES: AvatarProfile[] = [
     role: 'Shorts Editor',
     isMain: false,
     palette: CHARACTER_PALETTES.editor,
-    room: { left: 74, bottom: 20, scale: 0.95, facing: 'left' },
+    room: { left: 67, bottom: 34, scale: 0.85, facing: 'left' },
     idleMessages: [
       '컷 편집 90% 완료했어요! 🎞️',
       '자막 스타일 다듬는 중이에요 ✂️',

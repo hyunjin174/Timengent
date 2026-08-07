@@ -2,30 +2,64 @@ import type { AvatarState } from '../../types/avatar';
 import { PixelPanel } from '../ui/PixelPanel';
 import { AvatarSprite } from './AvatarSprite';
 
-function PixelCloud({ className, duration }: { className?: string; duration: string }) {
+function SignboardDecor({ className }: { className?: string }) {
   return (
-    <div
-      className={`absolute flex flex-col items-center gap-0.5 opacity-90 ${className ?? ''}`}
-      style={{ animation: `cloud-drift ${duration} linear infinite` }}
-    >
-      <div className="h-2 w-8 bg-white" />
-      <div className="h-2 w-14 bg-white" />
-      <div className="h-2 w-10 bg-white" />
+    <div className={`absolute ${className ?? ''}`}>
+      <div className="bg-wood-grain border-2 border-cy-wood-dark px-3 py-2 shadow-[3px_3px_0_rgba(0,0,0,0.15)]">
+        <div className="border-2 border-cy-wall-trim bg-cy-wall px-3 py-1.5 text-center">
+          <p className="font-pixel-sm whitespace-nowrap text-[9px] tracking-wide text-cy-wood-dark">
+            SHOPPING SHORTS
+          </p>
+          <p className="whitespace-nowrap text-[11px] font-bold text-cy-ink">콘텐츠 스튜디오</p>
+        </div>
+      </div>
     </div>
   );
 }
 
-function DeskDecor({ className }: { className?: string }) {
+function ReceptionCounter({ className }: { className?: string }) {
   return (
-    <div className={`absolute flex flex-col items-center ${className ?? ''}`}>
-      <div className="h-6 w-10 border-2 border-cy-navy bg-[#3a3f4b]">
-        <div className="m-1 h-3 w-7 bg-cy-blue-light" />
+    <div
+      className={`bg-wood-grain absolute flex h-9 items-start justify-evenly border-2 border-cy-wood-dark px-4 pt-1 shadow-[2px_2px_0_rgba(0,0,0,0.15)] ${className ?? ''}`}
+    >
+      {[0, 1].map((i) => (
+        <div key={i} className="h-5 w-8 border-2 border-cy-navy bg-[#3a3f4b]">
+          <div className="m-0.5 h-3 w-6 bg-cy-blue-light" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CorkboardDecor({ className }: { className?: string }) {
+  return (
+    <div className={`bg-wood-grain absolute border-2 border-cy-wood-dark p-1.5 ${className ?? ''}`}>
+      <div className="flex gap-1">
+        <div className="h-3.5 w-3.5 -rotate-6 bg-cy-pink" />
+        <div className="h-3.5 w-3.5 rotate-3 bg-cy-green" />
+        <div className="h-3.5 w-3.5 -rotate-3 bg-white" />
       </div>
-      <div className="h-5 w-16 border-2 border-cy-navy bg-[#a9754f]" />
-      <div className="flex w-16 justify-between px-1.5">
-        <div className="h-4 w-1.5 bg-[#7a5230]" />
-        <div className="h-4 w-1.5 bg-[#7a5230]" />
+    </div>
+  );
+}
+
+function AcUnitDecor({ className }: { className?: string }) {
+  return (
+    <div className={`absolute h-4 w-10 border-2 border-cy-navy bg-white ${className ?? ''}`}>
+      <div className="mt-1.5 flex justify-center">
+        <div className="h-0.5 w-6 bg-cy-blue-light" />
       </div>
+    </div>
+  );
+}
+
+function SkyWindowDecor({ className }: { className?: string }) {
+  return (
+    <div
+      className={`from-cy-sky-top to-cy-sky-bottom absolute h-10 w-14 overflow-hidden border-2 border-cy-wood-dark bg-gradient-to-b ${className ?? ''}`}
+    >
+      <div className="absolute left-2 top-2 h-1.5 w-5 bg-white" />
+      <div className="absolute left-3 top-[13px] h-1.5 w-3 bg-white" />
     </div>
   );
 }
@@ -71,7 +105,7 @@ interface MainRoomProps {
   avatars: AvatarState[];
 }
 
-/** Right column: isometric-style pixel-art office backdrop with the whole team placed inside it. */
+/** Right column: warm wood-and-cream office interior (reception counter, signboard, corkboard) with the team inside. */
 export function MainRoom({ avatars }: MainRoomProps) {
   return (
     <PixelPanel className="flex w-full flex-1 flex-col">
@@ -81,14 +115,18 @@ export function MainRoom({ avatars }: MainRoomProps) {
       </div>
 
       <div className="relative h-[420px] w-full overflow-hidden md:h-[520px]">
-        <div className="absolute inset-0 bg-gradient-to-b from-cy-sky-top via-cy-sky-mid to-cy-sky-bottom" />
-        <PixelCloud className="left-[10%] top-[10%]" duration="70s" />
-        <PixelCloud className="left-[55%] top-[18%]" duration="95s" />
+        <div className="bg-cy-wall absolute inset-0" />
+        <div className="bg-cy-wall-trim absolute inset-x-0 bottom-[42%] h-2" />
 
-        <div className="bg-iso-floor absolute inset-x-0 bottom-0 h-[42%] border-t-4 border-cy-navy/40" />
+        <AcUnitDecor className="left-[5%] top-[7%]" />
+        <SkyWindowDecor className="right-[6%] top-[8%]" />
+        <SignboardDecor className="left-1/2 top-[13%] -translate-x-1/2" />
+        <CorkboardDecor className="bottom-[46%] left-[4%]" />
 
-        <DeskDecor className="bottom-[6%] left-[4%]" />
-        <PlantDecor className="bottom-[8%] right-[4%]" />
+        <div className="bg-iso-floor border-cy-wood-dark absolute inset-x-0 bottom-0 h-[42%] border-t-4" />
+
+        <ReceptionCounter className="bottom-[29%] left-[18%] w-[64%]" />
+        <PlantDecor className="bottom-[6%] right-[4%]" />
 
         {avatars.map((avatar) => (
           <RoomAvatar key={avatar.id} avatar={avatar} />
