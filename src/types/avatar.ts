@@ -45,7 +45,18 @@ export interface AvatarStats {
 export interface AvatarRuntime extends AvatarStats {
   mood: Mood;
   statusMessage: string;
+  /** 현재 진행 중인 업무 (채팅으로 지시받은 내용) */
+  currentTask: string | null;
 }
 
 /** Full live state for one avatar: static profile + ticking runtime values. */
 export type AvatarState = AvatarProfile & AvatarRuntime;
+
+/** 채팅 메시지 */
+export interface ChatMessage {
+  id: string;
+  avatarId: string;
+  from: 'user' | 'agent';
+  text: string;
+  timestamp: number;
+}
