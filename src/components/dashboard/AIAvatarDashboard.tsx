@@ -26,9 +26,13 @@ export function AIAvatarDashboard() {
 
       <div className="mx-auto flex max-w-[1040px] flex-col gap-4 px-4 pb-6 md:px-8">
         <header className="text-center">
-          <p className="text-pixel-shadow text-[11px] tracking-wide text-white/90">⏺ TIMENGENT</p>
-          <h1 className="text-pixel-shadow text-[22px] font-bold text-white">AI 아바타 스튜디오</h1>
-          <p className="text-[11px] text-white/80">쇼핑 숏츠 &amp; 콘텐츠 팀이 오늘도 열일 중이에요</p>
+          {/* text-pixel-outline (not just white/opacity) keeps these legible across the
+              whole sky gradient — a flat color can't clear contrast at every stop. */}
+          <p className="text-pixel-outline text-[11px] tracking-wide text-white">
+            <span aria-hidden="true">⏺</span> TIMENGENT
+          </p>
+          <h1 className="text-pixel-outline text-[22px] font-bold text-white">AI 아바타 스튜디오</h1>
+          <p className="text-pixel-outline text-[11px] text-white">쇼핑 숏츠 &amp; 콘텐츠 팀이 오늘도 열일 중이에요</p>
         </header>
 
         <main className="flex flex-col items-start gap-4 md:flex-row">

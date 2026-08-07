@@ -23,8 +23,10 @@ export function ProfilePanel({ avatar, onAction }: ProfilePanelProps) {
   return (
     <div className="flex w-full flex-col gap-3 md:w-[280px]">
       <PixelPanel>
-        <div className="flex items-center justify-between bg-cy-blue px-3 py-1.5 text-[11px] font-bold text-white">
-          <span>🏠 MY STUDIO</span>
+        <div className="flex items-center justify-between bg-cy-blue-text px-3 py-1.5 text-[11px] font-bold text-white">
+          <h2>
+            <span aria-hidden="true">🏠</span> MY STUDIO
+          </h2>
           <span className="h-2 w-2 bg-cy-green shadow-[0_0_4px_2px_rgba(107,207,99,0.6)]" />
         </div>
 
@@ -34,20 +36,26 @@ export function ProfilePanel({ avatar, onAction }: ProfilePanelProps) {
           </div>
           <div className="text-center">
             <p className="text-pixel-shadow text-[18px] font-bold text-cy-ink">{avatar.name}</p>
-            <p className="font-pixel-sm text-[9px] text-cy-blue">{avatar.role}</p>
+            <p className="font-pixel-sm text-[9px] text-cy-blue-text">{avatar.role}</p>
           </div>
         </div>
 
         <div className="border-t-2 border-cy-navy bg-cy-cream px-3 py-2">
-          <p className="break-keep text-[11px] leading-relaxed text-cy-ink">{avatar.statusMessage}</p>
-          <p className="font-pixel-sm mt-1 text-right text-[9px] text-cy-blue/70">
+          {/* aria-live: this is the pet's one running "status readout," so announcing its
+              changes (including the passive idle-message rotation) is the point, not noise. */}
+          <p aria-live="polite" className="break-keep text-[11px] leading-relaxed text-cy-ink">
+            {avatar.statusMessage}
+          </p>
+          <p className="font-pixel-sm mt-1 text-right text-[9px] text-cy-ink/75">
             {formatElapsed(now - avatar.lastInteraction)} 상호작용
           </p>
         </div>
       </PixelPanel>
 
       <PixelPanel className="bg-cy-panel-alt px-3 py-3">
-        <p className="mb-2 text-[11px] font-bold text-cy-blue">📋 상태</p>
+        <h2 className="mb-2 text-[11px] font-bold text-cy-blue-text">
+          <span aria-hidden="true">📋</span> 상태
+        </h2>
         <div className="flex flex-col gap-2">
           <StatusGauge label="배고픔" icon="🍚" value={avatar.hunger} />
           <StatusGauge label="피로도" icon="😴" value={avatar.fatigue} />
@@ -56,7 +64,9 @@ export function ProfilePanel({ avatar, onAction }: ProfilePanelProps) {
       </PixelPanel>
 
       <PixelPanel className="bg-cy-panel-alt px-3 py-3">
-        <p className="mb-2 text-[11px] font-bold text-cy-blue">🎮 상호작용</p>
+        <h2 className="mb-2 text-[11px] font-bold text-cy-blue-text">
+          <span aria-hidden="true">🎮</span> 상호작용
+        </h2>
         <ActionButtons
           onFeed={() => onAction('feed')}
           onPraise={() => onAction('praise')}

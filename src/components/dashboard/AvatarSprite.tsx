@@ -31,6 +31,7 @@ export function AvatarSprite({ avatar, pixelSize = 7, showBadge = true }: Avatar
       {showBadge && badge && (
         <span
           key={`${avatar.mood}-${avatar.lastInteraction}`}
+          aria-hidden="true"
           className="animate-pop-badge pointer-events-none absolute -top-3 left-1/2 -translate-x-1/2 select-none text-lg drop-shadow"
         >
           {badge}

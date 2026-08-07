@@ -15,6 +15,11 @@
   --color-cy-sky-bottom: #e3f6ff;
   --color-cy-blue: #3d7fc4;
   --color-cy-blue-light: #6fb1e8;
+  /*
+   * Same hue as cy-blue, darkened until small (9-11px) text clears WCAG AA (4.5:1) — used
+   * both as a text color on light backgrounds and as a header-bar fill behind white text.
+   */
+  --color-cy-blue-text: #3672b0;
   --color-cy-navy: #1c355f;
   --color-cy-panel: #eef7ff;
   --color-cy-panel-alt: #ffffff;
@@ -60,6 +65,26 @@
   #root {
     min-height: 100svh;
   }
+
+  /* Keyboard focus needs to survive on top of pixel borders and dark panels alike. */
+  :focus-visible {
+    outline: 3px solid var(--color-cy-yellow);
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * Respect reduced-motion: the ambient bob/wiggle/drift loops are decorative, not load-bearing
+ * for any state change, so they're safe to fully disable rather than just shorten.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }
 
 @layer utilities {
@@ -104,6 +129,20 @@
 
   .text-pixel-shadow {
     text-shadow: 2px 2px 0 rgba(28, 53, 95, 0.25);
+  }
+
+  /*
+   * Navy outline in all 4 directions, not just a drop shadow — the header sits on a
+   * sky-blue gradient that runs from dark to light, so no single flat text color clears
+   * WCAG contrast across its whole range. An outline guarantees legibility regardless.
+   */
+  .text-pixel-outline {
+    text-shadow:
+      1.5px 0 0 var(--color-cy-navy),
+      -1.5px 0 0 var(--color-cy-navy),
+      0 1.5px 0 var(--color-cy-navy),
+      0 -1.5px 0 var(--color-cy-navy),
+      2px 2px 0 rgba(28, 53, 95, 0.4);
   }
 
   /* Outdoor grass band for the page backdrop, echoing the Cyworld splash-screen lawn. */

@@ -41,7 +41,11 @@ export function RoomAvatar3D({ avatar, phase, bubbleY }: RoomAvatar3DProps) {
         <Html position={[0, bubbleY, 0]} center distanceFactor={7} zIndexRange={[20, 0]} pointerEvents="none">
           <div className="flex flex-col items-center gap-1">
             {badge && (
-              <span key={`${avatar.mood}-${avatar.lastInteraction}`} className="animate-pop-badge text-xl">
+              <span
+                key={`${avatar.mood}-${avatar.lastInteraction}`}
+                aria-hidden="true"
+                className="animate-pop-badge text-xl"
+              >
                 {badge}
               </span>
             )}
