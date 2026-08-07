@@ -17,30 +17,29 @@ function RoomLoading() {
 
 interface MainRoomProps {
   avatars: AvatarState[];
+  selectedId: string;
+  onSelect: (id: string) => void;
 }
 
-/** Right column: the 3D Cyworld-style mini-room the whole team lives in. */
-export function MainRoom({ avatars }: MainRoomProps) {
+/** 오른쪽 열: 팀 전체가 사는 3D 미니룸 */
+export function MainRoom({ avatars, selectedId, onSelect }: MainRoomProps) {
   return (
     <PixelPanel className="flex w-full flex-1 flex-col">
       <div className="flex items-center justify-between bg-cy-blue-text px-3 py-1.5 text-[11px] font-bold text-white">
         <h2>
-          <span aria-hidden="true">🏢</span> MINI ROOM 3D
+          <span aria-hidden="true">🏢</span> 미니룸 3D
         </h2>
         <span>
           <span aria-hidden="true">🟢</span> {avatars.length}명 근무 중
         </span>
       </div>
 
-      <div className="relative h-[440px] w-full md:h-[560px]">
+      <div className="relative h-[380px] w-full md:h-[480px]">
         <Suspense fallback={<RoomLoading />}>
-          <MiniRoomScene avatars={avatars} />
+          <MiniRoomScene avatars={avatars} selectedId={selectedId} onSelect={onSelect} />
         </Suspense>
-        {/* Opaque backing instead of a translucent color: this sits over the 3D canvas, whose
-            content underneath varies (sky, floor, characters), so no fixed text opacity could
-            stay legible against all of it. */}
         <p className="font-pixel-sm pointer-events-none absolute bottom-2 right-3 bg-white/90 px-1.5 py-0.5 text-[9px] text-cy-ink">
-          드래그해서 방을 돌려보세요
+          드래그해서 방 돌리기 · 아바타 클릭으로 선택
         </p>
       </div>
     </PixelPanel>

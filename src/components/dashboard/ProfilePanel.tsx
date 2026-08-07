@@ -16,7 +16,7 @@ interface ProfilePanelProps {
   onAction: (action: AvatarAction) => void;
 }
 
-/** Left column: Cyworld-minihompy-style profile card for "my" avatar. */
+/** 선택한 에이전트의 프로필 + 상태 + 빠른 상호작용 */
 export function ProfilePanel({ avatar, onAction }: ProfilePanelProps) {
   const now = useNow(1000);
 
@@ -25,7 +25,7 @@ export function ProfilePanel({ avatar, onAction }: ProfilePanelProps) {
       <PixelPanel>
         <div className="flex items-center justify-between bg-cy-blue-text px-3 py-1.5 text-[11px] font-bold text-white">
           <h2>
-            <span aria-hidden="true">🏠</span> MY STUDIO
+            <span aria-hidden="true">🏠</span> 내 스튜디오
           </h2>
           <span className="h-2 w-2 bg-cy-green shadow-[0_0_4px_2px_rgba(107,207,99,0.6)]" />
         </div>
@@ -41,11 +41,14 @@ export function ProfilePanel({ avatar, onAction }: ProfilePanelProps) {
         </div>
 
         <div className="border-t-2 border-cy-navy bg-cy-cream px-3 py-2">
-          {/* aria-live: this is the pet's one running "status readout," so announcing its
-              changes (including the passive idle-message rotation) is the point, not noise. */}
           <p aria-live="polite" className="break-keep text-[11px] leading-relaxed text-cy-ink">
             {avatar.statusMessage}
           </p>
+          {avatar.currentTask && (
+            <p className="mt-1 text-[10px] text-cy-blue-text">
+              📋 현재 업무: {avatar.currentTask}
+            </p>
+          )}
           <p className="font-pixel-sm mt-1 text-right text-[9px] text-cy-ink/75">
             {formatElapsed(now - avatar.lastInteraction)} 상호작용
           </p>
@@ -65,7 +68,7 @@ export function ProfilePanel({ avatar, onAction }: ProfilePanelProps) {
 
       <PixelPanel className="bg-cy-panel-alt px-3 py-3">
         <h2 className="mb-2 text-[11px] font-bold text-cy-blue-text">
-          <span aria-hidden="true">🎮</span> 상호작용
+          <span aria-hidden="true">🎮</span> 빠른 상호작용
         </h2>
         <ActionButtons
           onFeed={() => onAction('feed')}
